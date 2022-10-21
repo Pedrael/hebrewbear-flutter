@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 class Word {
   final String root;
   final String translate;
@@ -10,4 +9,9 @@ class Word {
   Widget buildRoot(BuildContext context) => Text(root);
   Widget buildTranslate(BuildContext context) => Text(translate);
   Widget buildType(BuildContext context) => Text(type);
+
+  @override
+  String toString() {
+    return "$root $translate $type";
+  }
 }
