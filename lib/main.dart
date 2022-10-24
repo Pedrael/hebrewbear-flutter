@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/layouts/wordslist/wordslist.dart';
 
+import 'layouts/swipetest.dart';
 import 'widgets/sidebar.dart';
 
 void main() {
@@ -53,17 +54,14 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
       drawer: const HebrewBearSidebar(),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: SingleChildScrollView(child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SwipeTable(),//SingleChildScrollView(child: Column(
+          //mainAxisAlignment: MainAxisAlignment.start,
           
-          children: <Widget>[
-            WordsList(),
-          ],
-        ),), 
-      ),
+          //children: <Widget>[
+            //WordsList(),
+          //],
+        //),
+        //), 
     );
   }
 }

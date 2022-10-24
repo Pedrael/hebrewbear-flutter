@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hebrewbear/data/conjugation.dart';
+//import 'package:hebrewbear/data/alphabet.dart';
+import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/widgets/cell.dart';
-import '../conjugation/layout.dart';
-import 'word.dart';
-
+import '../conjugation/conjugation.dart';
+//import '../../data/word.dart';
 class WordsList extends StatelessWidget {
 
-  final items = List<Word>.generate(20, (index) => Word("לחמ", "translate $index", "type $index"));
+  //final items = List<Word>.generate(20, (index) => Word("${letters['alef']}${vowels['A']}${letters['gimel']}", "translate $index", "type $index"));
+  final items = DBwords;
   final double cellWidth = 168;
 
   WordsList({super.key});
@@ -26,7 +29,7 @@ class WordsList extends StatelessWidget {
       //defaultColumnWidth: const IntrinsicColumnWidth(),
       border: const TableBorder(verticalInside: BorderSide(color: Colors.black26, width: 1.0)),
       children: [
-        ...List.generate(items.length, (index) => TableRow(
+         ...List.generate(items.length, (index) => TableRow(
           decoration: BoxDecoration(
             color: index % 2 == 0 ? Colors.black12 : Colors.transparent,
           ),
@@ -34,31 +37,58 @@ class WordsList extends StatelessWidget {
             HebrewBearCell(child: items[index].buildRoot(context)),
             HebrewBearCell(child: items[index].buildTranslate(context)),
             HebrewBearCell(child: items[index].buildType(context)),
-            HebrewBearCell(child: ElevatedButton(onPressed: () {
+
+            HebrewBearCell(child: DBtypes.contains(items[index].type) ? ElevatedButton(onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Conjugation(word: items[index])
+                builder: (context) => Conjugation(
+                  word: items[index], 
+                  infinitive: createInfinitive(items[index].root, items[index].type),
+                  result: conjugatePresent(items[index].root, items[index].type), 
+                  time: 'Present')
               ));
-            }, child: const Text('Present')),),
-            HebrewBearCell(child: ElevatedButton(onPressed: () {}, child: const Text('Past')),),
-            HebrewBearCell(child: ElevatedButton(onPressed: () {}, child: const Text('Future')),),
-            HebrewBearCell(child: Material(
-              color: Colors.transparent,
-              child: Center(
-                child: Ink(
-                  decoration: const ShapeDecoration(
-                    color: Colors.deepOrange,
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.delete),
-                    hoverColor: Colors.transparent,
-                    color: Colors.white,
-                    //padding: const EdgeInsets.all(32.0),
-                    onPressed: () {},
-                  ),
-                ),
+              }, child: const Text('Present')) : const SizedBox.shrink()
               ),
-            )),
+
+            HebrewBearCell(child: DBtypes.contains(items[index].type) ? ElevatedButton(onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Conjugation(
+                  word: items[index], 
+                  infinitive: createInfinitive(items[index].root, items[index].type),
+                  result: conjugatePast(items[index].root, items[index].type), 
+                  time: 'Past')
+              ));
+              }, child: const Text('Past')) : const SizedBox.shrink()
+              ),
+
+            HebrewBearCell(child: DBtypes.contains(items[index].type) ? ElevatedButton(onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Conjugation(
+                  word: items[index], 
+                  infinitive: createInfinitive(items[index].root, items[index].type),
+                  result: conjugateFuture(items[index].root, items[index].type), 
+                  time: 'Future')
+              ));
+              }, child: const Text('Future')) : const SizedBox.shrink()
+              ),
+
+            // HebrewBearCell(child: Material(
+            //   color: Colors.transparent,
+            //   child: Center(
+            //     child: Ink(
+            //       decoration: const ShapeDecoration(
+            //         color: Colors.deepOrange,
+            //         shape: CircleBorder(),
+            //       ),
+            //       child: IconButton(
+            //         icon: const Icon(Icons.delete),
+            //         hoverColor: Colors.transparent,
+            //         color: Colors.white,
+            //         //padding: const EdgeInsets.all(32.0),
+            //         onPressed: () {},
+            //       ),
+            //     ),
+            //   ),
+            // )),
           ]
         )),
       ],
