@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hebrewbear/layouts/wordslist/wordslist.dart';
+//import 'package:hebrewbear/layouts/wordslist/wordslist.dart';
 
 import 'layouts/swipetest.dart';
 import 'widgets/sidebar.dart';
@@ -54,7 +54,7 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
       drawer: const HebrewBearSidebar(),
-      body: SwipeTable(),//SingleChildScrollView(child: Column(
+      body: WordsList(),//SingleChildScrollView(child: Column(
           //mainAxisAlignment: MainAxisAlignment.start,
           
           //children: <Widget>[
