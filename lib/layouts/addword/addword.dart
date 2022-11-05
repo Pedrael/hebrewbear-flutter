@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 
 class AddWord extends StatelessWidget {
@@ -10,30 +12,37 @@ class AddWord extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add new {$type}"),
+        title: Text("Add new $type"),
         actions: [
           IconButton(
             onPressed: () {}, icon: const Icon(Icons.arrow_back))
           ],
         ),
         body: Center(
-          child: SingleChildScrollView(
+          child: SizedBox(
+            width: 300.0,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter a search term',
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter root',
+                    ),
                   ),
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter a search term',
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter translate',
+                    ),
                   ),
                 ),
-              ]),)
+              ]),
+          ),
         ),
       );
   }

@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hebrewbear/data/dbmanager.dart';
+import 'package:provider/provider.dart';
 //import 'package:hebrewbear/layouts/wordslist/wordslist.dart';
 
 import 'layouts/swipetest.dart';
 import 'widgets/sidebar.dart';
 
 void main() {
-  runApp(const MyApp());
+  //runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => WordsListNotifier()),
+    ],
+    child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
