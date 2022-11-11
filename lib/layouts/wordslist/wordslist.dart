@@ -5,13 +5,13 @@ import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/widgets/cell.dart';
 import '../conjugation/conjugation.dart';
 //import '../../data/word.dart';
-class WordsList extends StatelessWidget {
+class WordsListOld extends StatelessWidget {
 
   //final items = List<Word>.generate(20, (index) => Word("${letters['alef']}${vowels['A']}${letters['gimel']}", "translate $index", "type $index"));
-  final items = DBwords;
+  final items = [];
   final double cellWidth = 168;
 
-  WordsList({super.key});
+  WordsListOld({super.key});
 
   @override
   Widget build(BuildContext context) {

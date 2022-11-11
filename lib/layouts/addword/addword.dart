@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/data/dbmanager.dart';
+import 'package:hebrewbear/data/word.dart';
+import 'package:hebrewbear/layouts/wordslist/swipetest.dart';
 import 'package:hebrewbear/widgets/dropdown.dart';
 import 'package:provider/provider.dart';
-
-import '../../data/word.dart';
 
 class AddWord extends StatelessWidget {
 
@@ -24,10 +24,6 @@ class AddWord extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add new $type"),
-        actions: [
-          IconButton(
-            onPressed: () {}, icon: const Icon(Icons.arrow_back))
-          ],
         ),
         body: Center(
           child: Form(
@@ -38,17 +34,37 @@ class AddWord extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: TextFormField(
-                      controller: rootController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter root',
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: TextFormField(
+                        validator: (value) {
+                          //final validChars = RegExp(letters.values.join());
+                          final validChars = RegExp(r'^[\u0590-\u05FF\u200f\u200e ]+$');
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          if(!validChars.hasMatch(value)) {
+                            return 'Only Hebrew allowed';
+                          }
+                          return null;
+                        },
+                        controller: rootController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter root',
+                        ),
                       ),
-                    ),
+                    )
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       controller: translateController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -65,33 +81,38 @@ class AddWord extends StatelessWidget {
                       typeController = newValue
                     },),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                           // Validate returns true if the form is valid, or false otherwise.
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        //final text = _formKey.currentState.toString();
-                        //print(rootController.text + " " + translateController.text + " " + typeController);
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-                        Provider.of<WordsListNotifier>(context, listen: false).words.add(Word(
-                          rootController.text,
-                          translateController.text,
-                          typeController
-                        ));
-                        // context.read<WordsListNotifier>().words.add(Word(
-                        //   rootController.text,
-                        //   translateController.text,
-                        //   typeController
-                        // ));
-                        print(context.read<WordsListNotifier>().words.toString() + "!");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Item added")),
-                        );
-                      }
-                    },
-                    child: Text('Add'),
-                  )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                      onPressed: () {
+                            // Validate returns true if the form is valid, or false otherwise.
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          Provider.of<WordsListNotifier>(context, listen: false).words.add(Word(
+                            rootController.text,
+                            translateController.text,
+                            typeController
+                          ));
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) => WordsList(),
+                          ), );
+                          // Navigator.pop(context, Word(
+                          //   rootController.text,
+                          //   translateController.text,
+                          //   typeController
+                          // ));
+                        }
+                      },
+                      child: Text('Add'),
+                    ),
+                    Padding(padding: EdgeInsets.all(10.0)),
+                    ElevatedButton(onPressed: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => WordsList(),
+                      ), );
+                    }, child: Text('Back'))
+                  ],),
                 ]),
             ),
           )

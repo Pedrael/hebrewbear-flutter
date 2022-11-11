@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/layouts/addword/addword.dart';
-
 class HebrewBearSidebar extends StatelessWidget {
 
   const HebrewBearSidebar({super.key});
@@ -23,7 +22,7 @@ class HebrewBearSidebar extends StatelessWidget {
           ListTile(
             //leading: Icon(Icons.donut_large),
             title: Text('Add verb'),
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => AddWord(
                   type: 'verb',
                 ),
