@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hebrewbear/data/dbmanager.dart';
+import 'package:hebrewbear/data/dataprovider.dart';
 import 'package:hebrewbear/layouts/wordslist/swipetest.dart';
 import 'package:provider/provider.dart';
 

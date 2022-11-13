@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/data/conjugation.dart';
 //import 'package:hebrewbear/data/alphabet.dart';
-import 'package:hebrewbear/data/dbmanager.dart';
+import 'package:hebrewbear/data/dataprovider.dart';
 import 'package:hebrewbear/widgets/cell.dart';
 import '../conjugation/conjugation.dart';
 //import '../../data/word.dart';

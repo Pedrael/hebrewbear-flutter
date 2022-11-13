@@ -1,36 +1,56 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
 import 'package:hebrewbear/data/word.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
-const List<String> DBtypes = [
-  "Paal",
-  "Piel",
-  "Hiphil",
-  "Hitpael",
-  "Nifal",
-  "Pual",
-  "Hufal",
-];
+part 'dbmanager.g.dart';
 
-class WordsListNotifier with ChangeNotifier {
+class WordsSchema extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get root => text()();
+  TextColumn get translate => text()();
+  TextColumn get type => text()();
+}
 
-  // ignore: prefer_final_fields
-  List<Word> _words = [
-    Word('מכר', 'sell1', 'Paal'),
-    Word('מכר', 'sell2', 'Piel'),
-    Word('מכר', 'sell3', 'Hiphil'),
-    Word('מכר', 'sell', 'Noun'),
-    Word('מכר', 'sell', 'Adjective'),
-  ];
+LazyDatabase _openConnection() {
+  return LazyDatabase(() async {
 
-  List<Word> get words => _words;
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(path.join(dbFolder.path, 'words.sqlite3'));
 
-  void add(Word w) {
-    _words.add(w);
-    notifyListeners();
+    return NativeDatabase(file);
+  });
+}
+
+@DriftDatabase(tables: [WordsSchema])
+class WordsDB extends _$WordsDB {
+
+  WordsDB() : super(_openConnection());
+
+  @override
+  int get schemaVersion => 1;
+
+  Future<List<WordsSchemaData>> getWords() async {
+    return await select(wordsSchema).get();
   }
 
-  void remove(int i) {
-    _words.removeAt(i);
-    notifyListeners();
+  Future<WordsSchemaData> getWord(int id) async {
+    return await (select(wordsSchema)..where((tbl) => tbl.id.equals(id))).getSingle();
   }
+
+  Future<bool> updateWord(WordsSchemaCompanion entity) async {
+    return await update(wordsSchema).replace(entity);
+  }
+
+  Future<int> insertWord(WordsSchemaCompanion entity) async {
+    return await into(wordsSchema).insert(entity);
+  }
+
+  Future<int> deleteWord(int id) async {
+    return await (delete(wordsSchema)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+
 }

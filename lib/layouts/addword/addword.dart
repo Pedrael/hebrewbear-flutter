@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:hebrewbear/data/dbmanager.dart';
+import 'package:hebrewbear/data/dataprovider.dart';
 import 'package:hebrewbear/data/word.dart';
 import 'package:hebrewbear/layouts/wordslist/swipetest.dart';
 import 'package:hebrewbear/widgets/dropdown.dart';
@@ -90,6 +90,7 @@ class AddWord extends StatelessWidget {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           Provider.of<WordsListNotifier>(context, listen: false).words.add(Word(
+                            Provider.of<WordsListNotifier>(context, listen: false).words.length.toString(),
                             rootController.text,
                             translateController.text,
                             typeController
