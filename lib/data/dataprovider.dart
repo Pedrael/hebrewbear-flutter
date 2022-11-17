@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/data/word.dart';
 
 const List<String> DBtypes = [
@@ -10,6 +9,8 @@ const List<String> DBtypes = [
   "Nifal",
   "Pual",
   "Hufal",
+  "Noun",
+  "Adjective"
 ];
 
 class WordsListNotifier with ChangeNotifier {

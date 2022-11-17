@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/data/dataprovider.dart';
+import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/layouts/wordslist/swipetest.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +9,7 @@ void main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => WordsListNotifier()),
+      Provider<WordsDB>(create: (_) => WordsDB(), dispose: (_, db) => db.close(),),
     ],
     child: const MyApp()),
   );

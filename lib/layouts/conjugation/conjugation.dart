@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/widgets/table.dart';
-import '../../widgets/cell.dart';
-import '../../data/word.dart';
+import 'package:hebrewbear/widgets/cell.dart';
 
 class Conjugation extends StatelessWidget {
 
@@ -14,7 +14,7 @@ class Conjugation extends StatelessWidget {
   });
 
   final String time;
-  final Word word;
+  final WordsSchemaData word;
   final Map <String, String> infinitive;
   final Map <String, String> result;
 
@@ -23,7 +23,7 @@ class Conjugation extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("${infinitive.values.first} - ${word.translate}, $time tense"),
+        title: Text("${infinitive.values.first}"),
         actions: [
           IconButton(
             onPressed: () {}, icon: const Icon(Icons.arrow_back))

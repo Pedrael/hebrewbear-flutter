@@ -1,19 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:drift/drift.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/data/dataprovider.dart';
-import 'package:hebrewbear/data/word.dart';
+import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/layouts/wordslist/swipetest.dart';
 import 'package:hebrewbear/widgets/dropdown.dart';
 import 'package:provider/provider.dart';
-
 class AddWord extends StatelessWidget {
 
   AddWord({super.key, required this.type});
 
   final String type;
   final _formKey = GlobalKey<FormState>();
-  final rootController = TextEditingController();
+  final rootController = TextEditingController(text: 'שאל');
   final translateController = TextEditingController();
   final listItems = DBtypes;
   String typeController = DBtypes.first;
@@ -38,7 +38,6 @@ class AddWord extends StatelessWidget {
                       textDirection: TextDirection.rtl,
                       child: TextFormField(
                         validator: (value) {
-                          //final validChars = RegExp(letters.values.join());
                           final validChars = RegExp(r'^[\u0590-\u05FF\u200f\u200e ]+$');
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
@@ -89,15 +88,15 @@ class AddWord extends StatelessWidget {
                             // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          Provider.of<WordsListNotifier>(context, listen: false).words.add(Word(
-                            Provider.of<WordsListNotifier>(context, listen: false).words.length.toString(),
-                            rootController.text,
-                            translateController.text,
-                            typeController
+                          Provider.of<WordsDB>(context, listen: false).insertWord(WordsSchemaCompanion(
+                            root: d.Value(rootController.text),
+                            translate: d.Value(translateController.text),
+                            type: d.Value(typeController),
                           ));
                           Navigator.pushReplacement(context, MaterialPageRoute(
                             builder: (context) => WordsList(),
                           ), );
+
                           // Navigator.pop(context, Word(
                           //   rootController.text,
                           //   translateController.text,
