@@ -18,16 +18,28 @@ class Conjugation extends StatelessWidget {
   final Map <String, String> infinitive;
   final Map <String, String> result;
 
+  final Map <String, Icon> iconsMap = const {
+    "S M": Icon(Icons.man),
+    "S F": Icon(Icons.woman),
+    "P M": Icon(Icons.people),
+    "P F": Icon(Icons.people),
+  };
+
+  final TextStyle textStyleHebrew = const TextStyle(
+    fontSize: 26,
+    fontFamily: 'Noto Serif Hebrew',
+  );
+
+  final TextStyle textStyle = const TextStyle(
+    fontSize: 26,
+  );
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("${infinitive.values.first}"),
-        actions: [
-          IconButton(
-            onPressed: () {}, icon: const Icon(Icons.arrow_back))
-          ],
+        title: Text(infinitive.values.first, style: textStyleHebrew,),
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -41,8 +53,10 @@ class Conjugation extends StatelessWidget {
                       ),
                       // ignore: prefer_const_literals_to_create_immutables
                       children: [
-                        HebrewBearCell(child: Text(result.keys.elementAt(index))),
-                        HebrewBearCell(child: Text(result.values.elementAt(index))),
+                        HebrewBearCell(child: Text(result.keys.elementAt(index),
+                          style: textStyle)),
+                        HebrewBearCell(child: Text(result.values.elementAt(index),
+                          style: textStyleHebrew,)),
                       ]
                     ))
                   ],

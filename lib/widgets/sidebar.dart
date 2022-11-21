@@ -14,13 +14,13 @@ class HebrewBearSidebar extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             const ListTile(
-              title: Text("Menu"),
+              title: Text("Menu", style: TextStyle(fontSize: 20),),
               textColor: Colors.white,
               tileColor: Colors.green,
             ),
             ListTile(
-              leading: Icon(Icons.plus_one),
-              title: const Text('Add word'),
+              leading: const Icon(Icons.plus_one),
+              title: const Text('Add word', style: TextStyle(fontSize: 16),),
               onTap: () => Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => AddWord(
                     type: 'word',

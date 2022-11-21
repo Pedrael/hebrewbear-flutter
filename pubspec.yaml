@@ -37,6 +37,10 @@ dependencies:
   drift: ^2.2.0
   sqlite3_flutter_libs: ^0.5.0
   path: ^1.8.2
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -97,3 +101,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Noto Serif Hebrew
+      fonts:
+        - asset: fonts/Noto_Serif_Hebrew/static/NotoSerifHebrew/NotoSerifHebrew-Regular.ttf

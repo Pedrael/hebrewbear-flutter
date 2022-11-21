@@ -7,14 +7,32 @@ import 'package:provider/provider.dart';
 
 class WordsList extends StatelessWidget {
 
+  final TextStyle textStyleHebrew = const TextStyle(
+    fontSize: 18,
+    fontFamily: 'Noto Serif Hebrew',
+  );
+
+  WordsList({super.key});
+
+  final filterController = TextEditingController();
+
   @override
     Widget build(BuildContext context) {
-
-      double btnArrRatio = 300.0/MediaQuery.of(context).size.width;
 
       return Scaffold(
         appBar: AppBar(
           title: const Text("Hebrew Bear"),
+        ),
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: TextField(
+            controller: filterController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Filter your words here',
+            ),
+          ),
         ),
         drawer: const HebrewBearSidebar(),
         body: FutureBuilder(
@@ -22,7 +40,10 @@ class WordsList extends StatelessWidget {
           builder: (context, snapshot) {
             List<Widget> children;
             if(snapshot.hasData) {
-              List<WordsSchemaData> data  = snapshot.data!;
+              List<WordsSchemaData> data  = snapshot.data!.where((element) => 
+              filterController.text == '' ? true :
+                element.translate.contains(filterController.text)
+              ).toList(); // TODO 
               children = <Widget>[
                 ...List.generate(data.length,
                 (index) => Dismissible(
@@ -55,7 +76,8 @@ class WordsList extends StatelessWidget {
                   child: data[index].type != "Noun" ? ExpansionTile(
                     title: Container(
                       child: ListTile(
-                        title: Text(data[index].root),
+                        title: Text("${createInfinitive(data[index].root, data[index].type).values.first} (${data[index].root})",
+                        style: textStyleHebrew,),
                         subtitle: Text(data[index].translate),
                         trailing: Text(data[index].type),
                       ),
@@ -107,8 +129,9 @@ class WordsList extends StatelessWidget {
                       )
                     ],
                   ) : Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: ListTile(
-                      title: Text(data[index].root),
+                      title: Text(data[index].root, style: textStyleHebrew,),
                       subtitle: Text(data[index].translate),
                       trailing: Text(data[index].type),
                     ),

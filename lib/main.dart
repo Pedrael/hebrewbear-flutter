@@ -3,9 +3,18 @@ import 'package:hebrewbear/data/dataprovider.dart';
 import 'package:hebrewbear/data/dbmanager.dart';
 import 'package:hebrewbear/layouts/wordslist/swipetest.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+import 'package:window_size/window_size.dart';
 
 void main() {
-  //runApp(const MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowTitle('Flutter Demo');
+    setWindowMinSize(const Size(360, 600));
+    setWindowMaxSize(const Size(720, double.infinity));
+  }
+  
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => WordsListNotifier()),

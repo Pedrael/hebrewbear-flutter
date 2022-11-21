@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hebrewbear/data/word.dart';
 
-const List<String> DBtypes = [
-  "Paal",
-  "Piel",
-  "Hiphil",
-  "Hitpael",
-  "Nifal",
-  "Pual",
-  "Hufal",
-  "Noun",
-  "Adjective"
-];
+const Map<String, bool> DBtypes = {
+  "Paal": true,
+  "Piel": true,
+  "Hiphil": true,
+  "Hitpael": true,
+  "Nifal": true,
+  "Pual": true,
+  "Hufal": true,
+  "Noun": false, 
+  "Adjective": false, 
+};
 
 class WordsListNotifier with ChangeNotifier {
 

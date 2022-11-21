@@ -13,10 +13,10 @@ class AddWord extends StatelessWidget {
 
   final String type;
   final _formKey = GlobalKey<FormState>();
-  final rootController = TextEditingController(text: 'שאל');
+  final rootController = TextEditingController();
   final translateController = TextEditingController();
   final listItems = DBtypes;
-  String typeController = DBtypes.first;
+  String typeController = DBtypes.keys.first;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +41,9 @@ class AddWord extends StatelessWidget {
                           final validChars = RegExp(r'^[\u0590-\u05FF\u200f\u200e ]+$');
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
+                          }
+                          if (value.length < 3) {
+                            return 'Minimum 3 letters';
                           }
                           if(!validChars.hasMatch(value)) {
                             return 'Only Hebrew allowed';
@@ -74,7 +77,7 @@ class AddWord extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: HebrewBearDropdown(
-                      listItems: listItems,
+                      listItems: listItems.keys.toList(),
                       defaultItem: typeController,
                       onChanged: (String newValue) => {
                       typeController = newValue
