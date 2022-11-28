@@ -9,14 +9,13 @@ class HebrewBearSidebar extends StatelessWidget {
     return SizedBox(
       width: 180,
       child: Drawer(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).canvasColor,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const ListTile(
-              title: Text("Menu", style: TextStyle(fontSize: 20),),
-              textColor: Colors.white,
-              tileColor: Colors.green,
+            AppBar(
+              title: const Text("Menu"),
+              automaticallyImplyLeading: false,
             ),
             ListTile(
               leading: const Icon(Icons.plus_one),

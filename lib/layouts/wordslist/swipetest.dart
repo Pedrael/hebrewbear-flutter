@@ -5,14 +5,49 @@ import 'package:hebrewbear/layouts/conjugation/conjugation.dart';
 import 'package:hebrewbear/widgets/sidebar.dart';
 import 'package:provider/provider.dart';
 
-class WordsList extends StatelessWidget {
+class ConjugationButton extends StatelessWidget {
+
+  const ConjugationButton({super.key, required this.time, required this.w});
+
+  final String time;
+  final WordsSchemaData w;
+
+  Map<String, String> _getConjugation() {
+    switch(time) {
+      case "Present": 
+        return conjugatePresent(w.root, w.type);
+      case "Past":
+        return conjugatePast(w.root, w.type);
+      case "Future": 
+        return conjugateFuture(w.root, w.type);
+      default:
+        return conjugatePresent(w.root, w.type);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: ElevatedButton(onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Conjugation(
+            word: w,
+            infinitive: createInfinitive(w.root, w.type),
+            result: _getConjugation(),
+            time: time)
+          ));
+        }, child: Text(time)),
+      );
+  }
+  
+}
+class _WordsListState extends State<WordsList> {
 
   final TextStyle textStyleHebrew = const TextStyle(
     fontSize: 18,
     fontFamily: 'Noto Serif Hebrew',
   );
-
-  WordsList({super.key});
 
   final filterController = TextEditingController();
 
@@ -24,26 +59,23 @@ class WordsList extends StatelessWidget {
           title: const Text("Hebrew Bear"),
         ),
         bottomNavigationBar: Container(
-          padding: EdgeInsets.all(10.0),
-          color: Colors.white,
+          padding: const EdgeInsets.all(10.0),
           child: TextField(
             controller: filterController,
+            onChanged: (text) => setState(() {}), // rerender on filter
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Filter your words here',
+              hintText: 'Search...',
             ),
           ),
         ),
         drawer: const HebrewBearSidebar(),
         body: FutureBuilder(
-          future: Provider.of<WordsDB>(context).getWords(),
+          future: Provider.of<WordsDB>(context).getWordsSmartFiltered(filterController.text),
           builder: (context, snapshot) {
             List<Widget> children;
             if(snapshot.hasData) {
-              List<WordsSchemaData> data  = snapshot.data!.where((element) => 
-              filterController.text == '' ? true :
-                element.translate.contains(filterController.text)
-              ).toList(); // TODO 
+              List<WordsSchemaData> data  = snapshot.data!;
               children = <Widget>[
                 ...List.generate(data.length,
                 (index) => Dismissible(
@@ -61,70 +93,33 @@ class WordsList extends StatelessWidget {
                           actions: <Widget>[
                             ElevatedButton(
                               onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text("DELETE")
+                              child: const Text("Delete")
                             ),
                             ElevatedButton(
                               onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text("CANCEL"),
+                              child: const Text("Cancel"),
                             ),
                           ],
                         );
                       },
                     );
-                  },
-                  background: Container(color: Colors.greenAccent),
+                  }, // confirm dismiss
+                  background: Container(color: Theme.of(context).focusColor),
                   child: data[index].type != "Noun" ? ExpansionTile(
-                    title: Container(
-                      child: ListTile(
-                        title: Text("${createInfinitive(data[index].root, data[index].type).values.first} (${data[index].root})",
-                        style: textStyleHebrew,),
-                        subtitle: Text(data[index].translate),
-                        trailing: Text(data[index].type),
-                      ),
+                    title: ListTile(
+                      title: Text("${createInfinitive(data[index].root, data[index].type).values.first} (${data[index].root})",
+                      style: textStyleHebrew,),
+                      subtitle: Text(data[index].translate),
+                      trailing: Text(data[index].type),
                     ),
                     children: <Widget>[
                       ListTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                          Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => Conjugation(
-                                  word: data[index],
-                                  infinitive: createInfinitive(data[index].root, data[index].type),
-                                  result: conjugatePresent(data[index].root, data[index].type), 
-                                  time: 'Present')
-                                ));
-                              }, child: const Text('Present')),
-                            ),
-
-                          Container(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => Conjugation(
-                                  word: data[index],
-                                  infinitive: createInfinitive(data[index].root, data[index].type),
-                                  result: conjugatePast(data[index].root, data[index].type),
-                                  time: 'Past')
-                                ));
-                              }, child: const Text('Past')),
-                            ),
-
-                          Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ElevatedButton(onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Conjugation(
-                                    word: data[index],
-                                    infinitive: createInfinitive(data[index].root, data[index].type),
-                                    result: conjugateFuture(data[index].root, data[index].type),  
-                                    time: 'Future')
-                                  ));
-                                }, child: const Text('Future')),
-                              ),
+                            ConjugationButton(time: "Present", w: data[index]),
+                            ConjugationButton(time: "Past", w: data[index]),
+                            ConjugationButton(time: "Future", w: data[index]),                     
                         ],),
                       )
                     ],
@@ -151,4 +146,14 @@ class WordsList extends StatelessWidget {
         ),
       );
     }
+
+}
+
+class WordsList extends StatefulWidget {
+
+  WordsList({super.key});
+
+  @override
+  State<WordsList> createState() => _WordsListState();
+  
 }

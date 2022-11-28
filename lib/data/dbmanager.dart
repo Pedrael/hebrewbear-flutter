@@ -35,6 +35,18 @@ class WordsDB extends _$WordsDB {
     return await select(wordsSchema).get();
   }
 
+  Future<List<WordsSchemaData>> getWordsFiltered(String filter) async {
+    return await (select(wordsSchema)..where((tbl) => tbl.translate.contains(filter))).get();
+  }
+
+  Future<List<WordsSchemaData>> getWordsSmartFiltered(String filter) async {
+    final validJewish = RegExp(r'^[\u0590-\u05FF\u200f\u200e ]+$');
+    if(validJewish.hasMatch(filter)) {
+      return await (select(wordsSchema)..where((tbl) => tbl.root.contains(filter))).get();                     
+    }
+    return await (select(wordsSchema)..where((tbl) => tbl.translate.contains(filter))).get();
+  }
+
   Future<WordsSchemaData> getWord(int id) async {
     return await (select(wordsSchema)..where((tbl) => tbl.id.equals(id))).getSingle();
   }

@@ -17,7 +17,6 @@ void main() {
   
   runApp(
     MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => WordsListNotifier()),
       Provider<WordsDB>(create: (_) => WordsDB(), dispose: (_, db) => db.close(),),
     ],
     child: const MyApp()),
@@ -32,11 +31,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hebrew Bear',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        canvasColor: Colors.white70,
-        primaryColor: Colors.greenAccent
+      darkTheme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        primaryColor: Colors.black,
+        brightness: Brightness.dark,
+        backgroundColor: const Color(0xFF212121),
+        dividerColor: Colors.black12,
       ),
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+        primaryColor: Colors.white,
+        brightness: Brightness.light,
+        backgroundColor: const Color(0xFFE5E5E5),
+        dividerColor: Colors.white54,
+      ),
+      themeMode: ThemeMode.dark,
       home: WordsList(),
     );
   }

@@ -49,7 +49,7 @@ class Conjugation extends StatelessWidget {
                   children: [
                     ...List.generate(result.length, (index) => TableRow(
                       decoration: BoxDecoration(
-                        color: index % 2 == 0 ? Colors.black12 : Colors.transparent,
+                        color: index % 2 == 0 ? Color.fromARGB(42, 0, 0, 0) : Colors.transparent,
                       ),
                       // ignore: prefer_const_literals_to_create_immutables
                       children: [

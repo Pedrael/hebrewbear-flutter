@@ -30,13 +30,13 @@ class _HebrewBearDropdownState extends State<HebrewBearDropdown> {
         value: dropDownValue,
         icon: const Icon(Icons.arrow_downward),
         elevation: 16,
-        dropdownColor: Colors.white,
+        //dropdownColor: Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(4.0)),
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
         ),
-        focusColor: Colors.white,
-        style: const TextStyle(color: Colors.black),
+        focusColor: Colors.transparent,
+        //style: const TextStyle(color: Colors.black),
         items: [
           ...List.generate(length, (index) => DropdownMenuItem<String>(
             // value: items[index],

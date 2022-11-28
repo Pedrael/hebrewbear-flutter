@@ -42,8 +42,10 @@ class AddWord extends StatelessWidget {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
                           }
-                          if (value.length < 3) {
-                            return 'Minimum 3 letters';
+                          if(DBtypes[typeController] == true) {
+                              if (value.length < 3) {
+                              return 'Minimum 3 letters';
+                            }
                           }
                           if(!validChars.hasMatch(value)) {
                             return 'Only Hebrew allowed';
@@ -53,7 +55,7 @@ class AddWord extends StatelessWidget {
                         controller: rootController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          hintText: 'Enter root',
+                          hintText: 'Enter root if verb or word otherwise',
                         ),
                       ),
                     )
